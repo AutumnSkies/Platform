@@ -46,21 +46,21 @@ async def roll(ctx, dice: str):
 @bot.command()
 async def setup(ctx):
     """Sets up reaction roles."""
-    message = await ctx.send("React with 🎮 for Gamer role, or react with 🎨 for Artist role.")
-    await message.add_reaction("🎮")
-    await message.add_reaction("🎨")
+    message = await ctx.send("React with 🐉 for DnD or 🤖 for Lancer")
+    await message.add_reaction("🐉")
+    await message.add_reaction("🤖")
 
 @bot.event
 async def on_reaction_add(reaction, user):
     if user.bot:
         return
 
-    if reaction.message.content == "React with 🎮 for Gamer role, or react with 🎨 for Artist role.":
-        if str(reaction.emoji) == "🎮":
-            role = discord.utils.get(user.guild.roles, name="Gamer")
+    if reaction.message.content == "React with 🐉 for DnD or 🤖 for Lancer":
+        if str(reaction.emoji) == "🐉":
+            role = discord.utils.get(user.guild.roles, name="dnd")
             await user.add_roles(role)
-        elif str(reaction.emoji) == "🎨":
-            role = discord.utils.get(user.guild.roles, name="Artist")
+        elif str(reaction.emoji) == "🤖":
+            role = discord.utils.get(user.guild.roles, name="lancer")
             await user.add_roles(role)
 
 bot.run(token, log_handler=handler)
