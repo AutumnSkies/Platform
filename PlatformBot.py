@@ -25,6 +25,13 @@ handler = logging.FileHandler(filename='Platform.log', encoding='utf-8', mode='w
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
+# Very advanced error handling
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, discord.ext.commands.errors.MissingRole) and "Role 'PlatformPermissions' is required to run this command" in str(error):
+        await ctx.send("Every 60 seconds a minute passes in Ohio (Lacking PlatformPermissions role)")
+
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Are you sure you'd like to do that?"))
@@ -44,7 +51,9 @@ async def roll(ctx, dice: str):
     await ctx.send(result)
 
 @bot.command()
-async def setup(ctx):
+@commands.has_role("PlatformPermissions")
+async def reaction(ctx):
+    
     """Sets up reaction roles."""
     message = await ctx.send("React with 🐉 for DnD or 🤖 for Lancer")
     await message.add_reaction("🐉")
